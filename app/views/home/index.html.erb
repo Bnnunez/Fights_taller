@@ -1,0 +1,142 @@
+<h1>Rutas de vuelo</h1>
+
+<style>
+       #map {
+        min-height: 900px;
+        height: auto;
+        width: 90%;
+        border: 5px;
+        border-radius: 10px;
+       }
+
+</style>
+
+<center>
+
+  <div class="container" hidden="true">
+
+    <div class="tab-content">
+      <div class="row tab-pane" role="tabpanel" id="emiting">
+        <p>
+          <div class="col-sm-12">
+            <div id="emitPanel">
+              <form id="emitData">
+                <div class="form-group well">
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" id="event-name" placeholder="Event name">
+                  </div>
+                  <button id="submitEmit" type="submit" class="btn btn-success" disabled>Emit</button>
+                  <span class="label label-primary emitted-msg">Event emitted!</span>
+                  <span class="label label-danger emitted-failure-msg">Event failure</span>
+                </div>
+                <div class="form-group">
+                  <label class="radio-inline">
+                    <input id="emitAsPlaintext" type="radio" name="emitAs" value="plaintext" checked="checked" />
+                    Send data as plaintext
+                  </label>
+                  <label class="radio-inline">
+                    <input id="emitAsJSON" type="radio" name="emitAs" value="JSON" />
+                    Send data as JSON object
+                  </label>
+                </div>
+                <div class="form-group">
+                  <div id="plainTextData">
+                    <label for="data-text" class="control-label">Data: plaintext</label>
+                    <textarea class="form-control" id="data-text"></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div id="jsonData">
+                    <div>
+                      <label for="data-text" class="control-label">Data: JSON (key, value)</label>
+                    </div>
+                    <button id="addNewJsonField" type="button" class="btn btn-xs btn-warning">add new</button></br>
+                    <div class="form-inline">
+                      <div class="form-group">
+                        <input type="text" class="form-control key">
+                      </div>
+                      <div class="form-group">
+                        <input type="text" class="form-control value">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </p>
+      </div>
+      <div class="row tab-pane active" role="tabpanel" id="listening">
+        <p>
+          <div class="col-sm-12">
+            <div class="well">
+              <form id="addListener">
+                <div class="col-sm-5">
+                  <input type="text" class="eventName form-control" id="exampleInputEmail3" placeholder="Event name">
+                </div>
+                <button type="submit" class="btn btn-success">Listen</button>
+                <button type="button" class="btn btn-warning pull-right" onclick="clearAllEvents()">Clear All Events</button>
+                <span class="label label-danger listen-failure-msg">Can't add duplicated or empty listener</span>
+                <span class="label label-primary listen-added-msg">Listener added</span>
+              </form>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div id="eventPanels">
+              <div class="panel panel-primary" id="panel-connected">
+                <div class="panel-heading">
+                  <button type="button" class="btn btn-warning btn-xs pull-right" data-toggle="collapse" data-target="#connectionPanel" aria-expanded="false" aria-controls="connectionPanel">
+                    Toggle panel</button>
+                  <button type="button" class="btn btn-warning btn-xs pull-right" onclick="clearEvents('connectionPanel')">
+                    Clear Events</button>
+                  <h3 class="panel-title">On "connect / disconnect" Events</h3>
+                </div>
+                <div id="connectionPanel" class="panel-body">
+                </div>
+              </div>
+            </div>
+          </div>
+        </p>
+      </div>
+      <div class="row tab-pane" role="tabpanel" id="emitAckRes">
+        <p>
+          <div class="col-sm-12">
+            <div id="emitAckResPanels">
+              <!--wait emiting-->
+            </div>
+          </div>
+        </p>
+      </div>
+      <div class="row tab-pane" role="tabpanel" id="emitHistory">
+        <p>
+          <div class="col-sm-12">
+            <div id="emitHistoryPanels">
+              <!--wait emiting-->
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="well">
+              <form id="clearHistory">
+                <button type="submit" class="btn btn-success">Clear ALL History</button>
+              </form>
+            </div>
+          </div>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+<div id="map"></div>
+<script>
+  //Código basado en http://amritb.github.io/socketio-client-tool/
+  //Para conexion con servidor.
+  //Gracias totales!
+  initMap();
+
+</script>
+</center>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.slim.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pouchdb/6.2.0/pouchdb.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB23k_7s-Ovk6Meh5ikt_vKIBbhMOh7ny4&callback=initMap"> </script>
